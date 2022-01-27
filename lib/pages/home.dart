@@ -14,9 +14,65 @@ class _HomeState extends State<Home> {
   int pageIndex = 0;
   PageController pageController = PageController(initialPage: 0);
   bool value = false;
+  int currentIndex = 0;
+
+
 
   @override
   Widget build(BuildContext context) {
+    List pages = [
+      // 1st Page
+      PageViewerWidget(
+        text1: 'ENTA',
+        text2: 'Read Terms and Conditions',
+        text3: 'Accept the Terms and Conditions',
+        text4: 'Next',
+        text5: 'Try Out Enta',
+        onTap:(){Navigator.push(context,MaterialPageRoute(builder: (context) =>const LoginScreen()));},
+        onClicked: () => pageController.nextPage(duration: const Duration(milliseconds: 1), curve: Curves.bounceInOut),
+        image: 'musics.jpg',
+      ),
+
+      // 2nd Page
+      PageViewerWidget(
+        text1: 'Movies',
+        text2: '',
+        text3: 'Enjoy your movies, series, animes and Trailers from your personal devices',
+        text4: 'Watch Movies',
+        text5: '',
+        onTap:(){},
+        onClicked: () => pageController.nextPage(duration: const Duration(milliseconds: 1), curve: Curves.bounceInOut),
+        image: 'smiley.png',
+      ),
+
+      // 3rd Page
+      PageViewerWidget(
+        text1: 'Music',
+        text2: '',
+        text3: 'Enjoy your music streams, offline, music videos and even download',
+        text4: 'Next',
+        text5: '',
+        onTap:(){},
+        onClicked: () => pageController.nextPage(duration: const Duration(milliseconds: 1), curve: Curves.bounceInOut),
+        image: 'music.png',
+      ),
+
+      //4th Page
+      PageViewerWidget(
+        text1: 'Novels & Mangas',
+        text2: '',
+        text3: 'Book readers with this feature can enjoy the favourite novels and mangas straight from your device',
+        text4: 'Get Started',
+        text5: '',
+        onTap:(){},
+        onClicked: (){
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const  LoginScreen()));},
+        image: 'icons8_book_128px.png',
+      ),
+    ];
+
+
     return Scaffold(
       // backgroundColor: Colors.white,
       // appBar: AppBar(),
@@ -36,7 +92,7 @@ class _HomeState extends State<Home> {
             ),
           ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 94),
+          padding: const EdgeInsets.symmetric(vertical: 64),
           child: PageView(
             controller: pageController,
             onPageChanged: (int index){
@@ -98,15 +154,49 @@ class _HomeState extends State<Home> {
                 onTap:(){},
                 onClicked: (){
                   Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const  LoginScreen()));},
+                      MaterialPageRoute(builder: (context) => const  LoginScreen()));},
                 image: 'icons8_book_128px.png',
 
               ),
+              ],
 
-            ],
+
           ),
         ),
+
       ),
+
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        // page
+        type: BottomNavigationBarType.fixed,
+
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.movie_creation_outlined),
+            label: 'Movies',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.queue_music),
+            label: 'Music',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book_rounded),
+            label: 'Novels & Mangas',
+          ),
+        ],
+
+        currentIndex: pageIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: (int index){
+          setState(() {
+            pageIndex = index;
+          });
+        },
       ),
     );
   }

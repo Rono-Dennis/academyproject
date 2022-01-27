@@ -137,12 +137,12 @@ class _UpdateState extends State<Update> {
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.vpn_key),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "${loggedInUser.password}- password",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+            prefixIcon: const Icon(Icons.vpn_key),
+            contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+            hintText: "${loggedInUser.password}- password",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             suffixIcon: IconButton(
               icon: toggle ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
               onPressed: togglepassword,
@@ -166,12 +166,12 @@ class _UpdateState extends State<Update> {
         },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.vpn_key),
-          contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-          hintText: "${loggedInUser.password}- confirm password",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+            prefixIcon: const Icon(Icons.vpn_key),
+            contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+            hintText: "${loggedInUser.password}- confirm password",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             suffixIcon: IconButton(
               icon: toggle1 ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
               onPressed: toggleConformpassword,
@@ -251,7 +251,7 @@ class _UpdateState extends State<Update> {
                     ),
 
                     const SizedBox(height: 45),
-                      Text("${loggedInUser.email}",
+                    Text("${loggedInUser.email}",
                         style: const TextStyle(
                           fontSize: 38,
                           fontWeight: FontWeight.w700,
@@ -269,8 +269,15 @@ class _UpdateState extends State<Update> {
                     ButtonWidget
                       (
                         text: "Update",
-                        onClicked: (){
-                          uploadImage();
+                        onClicked: () {
+                          signUp(emailEditingController.text,
+                              passwordEditingController.text);
+
+                          if (pickedImage != null) {
+                            uploadImage();
+                          } else {
+                            Fluttertoast.showToast(msg: "Image not selected");
+                          }
                         }
 
                     ),
@@ -293,8 +300,10 @@ class _UpdateState extends State<Update> {
     if (_formKey.currentState!.validate()) {
       try {
         User? user = FirebaseAuth.instance.currentUser;
+        String password1 = user?.updateEmail(email) as String;
+        String email1 = user?.updatePassword(password) as String;
         await
-            user?.reauthenticateWithCredential(EmailAuthProvider.credential(email: email, password: password))
+        user?.reauthenticateWithCredential(EmailAuthProvider.credential(email: email1, password: password1))
             .then((value) => {uploadImage()})
             .catchError((e) {
           Fluttertoast.showToast(msg: e!.message);
@@ -351,7 +360,7 @@ class _UpdateState extends State<Update> {
 
 
       if (e.code == 'permission-denied') {
-       }
+      }
       // ...
     }
   }
@@ -363,7 +372,7 @@ class _UpdateState extends State<Update> {
     // sedning these values
 
 
-     User? user = _auth.currentUser;
+    User? user = _auth.currentUser;
 
     UserModel userModel = UserModel();
 
@@ -381,7 +390,7 @@ class _UpdateState extends State<Update> {
 
     await users.doc(_auth.currentUser?.uid).update(userModel.toMap()).then((value) =>
         Fluttertoast.showToast(msg: "Details updated successfully"))
-    .catchError((onError) => Fluttertoast.showToast(msg: "Failed to updated"));
+        .catchError((onError) => Fluttertoast.showToast(msg: "Failed to updated"));
 
 
     Navigator.pushAndRemoveUntil(
